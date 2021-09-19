@@ -2,11 +2,11 @@ def _spl_two(string: str):
     return [string[i:i + 2] for i in range(0, len(string), 2)]
 
 
-def bad_crypt(string: str, password: str) -> str:
-    string_ords = [ord(char) for char in string]
+def bad_crypt(data: str, password: str) -> str:
+    string_ords = [ord(char) for char in data]
     password_ords = [ord(char) for char in password]
 
-    for char in string:
+    for char in data:
         string_ords.append(ord(char))
     for char in password:
         password_ords.append(ord(char))
@@ -15,12 +15,11 @@ def bad_crypt(string: str, password: str) -> str:
             password_ords.append(ord(char))
     while len(password_ords) > len(string_ords):
         password_ords.pop(-1)
+    return ''.join([chr(ord_) for ord_ in [os + op for os, op in zip(string_ords, password_ords)]])
 
-    return ''.join([chr(ord_) for ord_ in [os - op for os, op in zip(string_ords, password_ords)]])
 
-
-def bad_decrypt(string: str, password: str) -> str:
-    string_ords = [ord(char) for char in string]
+def bad_decrypt(encrypted_data: str, password: str) -> str:
+    string_ords = [ord(char) for char in encrypted_data]
     password_ords = [ord(char) for char in password]
     chars = ""
     while len(password_ords) < len(string_ords):
@@ -37,24 +36,24 @@ def bad_decrypt(string: str, password: str) -> str:
     return chars
 
 
-def crypt(string: str, password: str) -> str:
+def crypt(data: str, password: str) -> str:
     return bad_crypt(
         bad_crypt(
             bad_crypt(
                 bad_crypt(
-                    string, password
+                    data, password
                 ), password[::-1]
             ), ''.join(_spl_two(password)[::-1])
         ), password
     )
 
 
-def decrypt(string: str, password: str) -> str:
+def decrypt(encrypted_data: str, password: str) -> str:
     return bad_decrypt(
         bad_decrypt(
             bad_decrypt(
                 bad_decrypt(
-                    string, password
+                    encrypted_data, password
                 ), password[::-1]
             ), ''.join(_spl_two(password)[::-1])
         ), password
@@ -65,19 +64,19 @@ class Crypter:
     def __init__(self, password):
         self.password = password
 
-    def crypt(self, string: str) -> str:
-        return crypt(string=string, password=self.password)
+    def crypt(self, data: str) -> str:
+        return crypt(data=data, password=self.password)
 
-    def decrypt(self, string: str) -> str:
-        return decrypt(string=string, password=self.password)
+    def decrypt(self, encrypted_Data: str) -> str:
+        return decrypt(encrypted_data=encrypted_Data, password=self.password)
 
 
 class BadCrypter:
     def __init__(self, password):
         self.password = password
 
-    def crypt(self, string: str) -> str:
-        return bad_crypt(string=string, password=self.password)
+    def crypt(self, data: str) -> str:
+        return bad_crypt(data=data, password=self.password)
 
-    def decrypt(self, string: str) -> str:
-        return bad_decrypt(string=string, password=self.password)
+    def decrypt(self, encrypted_data: str) -> str:
+        return bad_decrypt(encrypted_data=encrypted_data, password=self.password)

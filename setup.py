@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name="apscrypt",
     packages=["apscrypt"],
-    versions="1.0.0",
+    version="0.0.1",
     author="Sellig6792",
     license="LICENSE",
     classifiers=[
