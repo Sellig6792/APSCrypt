@@ -6,15 +6,12 @@ def bad_crypt(data: str, password: str) -> str:
     string_ords = [ord(char) for char in data]
     password_ords = [ord(char) for char in password]
 
-    for char in data:
-        string_ords.append(ord(char))
-    for char in password:
-        password_ords.append(ord(char))
     while len(password_ords) < len(string_ords):
         for char in password:
             password_ords.append(ord(char))
     while len(password_ords) > len(string_ords):
         password_ords.pop(-1)
+
     return ''.join([chr(ord_) for ord_ in [os + op for os, op in zip(string_ords, password_ords)]])
 
 
@@ -67,8 +64,8 @@ class Crypter:
     def crypt(self, data: str) -> str:
         return crypt(data=data, password=self.password)
 
-    def decrypt(self, encrypted_Data: str) -> str:
-        return decrypt(encrypted_data=encrypted_Data, password=self.password)
+    def decrypt(self, encrypted_data: str) -> str:
+        return decrypt(encrypted_data=encrypted_data, password=self.password)
 
 
 class BadCrypter:
